@@ -1,30 +1,56 @@
-# opencode-deepseek skill for Claude Code
+# ให้ Claude สั่ง DeepSeek ทำงานแทน
 
-Lets Claude hand tasks to DeepSeek V4.1 Flash through opencode (OpenCode Go): autonomous coding that runs to the end, or read-only review. Never hangs, one clean report per run.
+คุณคุยกับ Claude เหมือนเดิม Claude เป็นคนวางแผนและตรวจงาน
+ส่วน DeepSeek V4.1 Flash เป็นคนลงมือทำ
 
-## Needs
-- Python 3, Claude Code
-- opencode (https://opencode.ai), logged in to OpenCode Go (`opencode auth login`). Your own subscription; this package contains no key.
+## ต้องมีอะไรบ้าง
+- Claude Code
+- Python 3
+- [opencode](https://opencode.ai)
+- สมัคร OpenCode Go ของตัวเอง
 
-## Install
-Copy the `opencode-deepseek` folder into `~/.claude/skills/` (Windows: `C:\Users\<you>\.claude\skills\`). Restart Claude Code. That's it.
+## ติดตั้ง (ทำครั้งเดียว)
+1. [โหลดไฟล์ซิป](https://github.com/Baipad/opencode-deepseek-SKILL-for-Claude/archive/refs/heads/main.zip) แล้วแตกไฟล์
+2. ก๊อปโฟลเดอร์ `opencode-deepseek` ไปวางที่ `C:\Users\ชื่อคุณ\.claude\skills\`
+   (ถ้ายังไม่มีโฟลเดอร์ `skills` ให้สร้างเอง)
+3. เปิด Terminal พิมพ์ `opencode auth login` เลือก OpenCode Go แล้ววาง key
+4. ปิดแล้วเปิด Claude Code ใหม่
 
-On first run the script copies its two agents (`ds-auto`, `ds-review`) into `~/.config/opencode/agents/` if they are missing. Claude may ask once to allow running the script; approve it.
+## วิธีใช้
+พิมพ์บอก Claude เป็นภาษาธรรมดาได้เลย
 
-## Use
-Ask Claude: "have deepseek implement X" or "use deepseek to review this project". Or run directly:
-```
-python -I ~/.claude/skills/opencode-deepseek/scripts/oc.py --mode auto --dir "<project>" "<task>"
-python -I ~/.claude/skills/opencode-deepseek/scripts/oc.py --mode review --dir "<project>" "<question>"
-```
+| อยากได้ | พิมพ์ประมาณนี้ |
+|---|---|
+| แก้บั๊ก | ให้ deepseek แก้ปุ่มล็อกอินที่กดไม่ติด |
+| ทำของใหม่ | ให้ deepseek เพิ่มหน้าติดต่อเรา |
+| ตรวจงาน ไม่แก้ไฟล์ | ให้ deepseek ตรวจโปรเจกต์นี้ |
+| ดูรูป | ให้ deepseek ดูรูปนี้แล้วบอกว่าผิดตรงไหน |
+| ทำหลายอย่าง | ให้ deepseek ทำ 3 งานนี้พร้อมกัน |
+| แก้ต่อ | ส่งกลับไปแก้ตรงนี้อีกรอบ |
 
-## Modes
-- `auto`: edits files, runs shell and tests, never asks questions.
-- `review`: read-only. Cannot edit or run arbitrary shell.
+ครั้งแรก Claude อาจถามขออนุญาตรันคำสั่ง ให้กดอนุญาต
 
-## Notes
-- Locked to `opencode-go/deepseek-v4.1-flash`. That model has no effort setting.
-- `.env` and key files are blocked for read and shell; the grep tool can still search them. Don't point it at folders holding secrets.
-- DeepSeek's knowledge ends around mid-2025: check library versions and API claims, and review its code before shipping.
-- Tested on Windows only.
-- Uninstall: delete the skill folder and the two `ds-*.md` files in `~/.config/opencode/agents/`.
+## สั่งยังไงให้ได้งานดี
+บอกให้ครบ 3 อย่าง
+- **ทำอะไร**
+- **ตรงไหน**
+- **แบบไหนถึงเรียกว่าเสร็จ**
+
+ตัวอย่าง: *ให้ deepseek แก้หน้าสมัครสมาชิก ถ้าอีเมลผิดให้ขึ้นข้อความสีแดง และต้องสมัครได้จริง*
+
+## ข้อควรระวัง
+- สำรองงานไว้ก่อน (เช่นใช้ git) เพราะ DeepSeek แก้ไฟล์ได้เองโดยไม่ถาม
+- อย่าให้ทำงานในโฟลเดอร์ที่มีรหัสผ่านหรือ key
+- AI พลาดได้ ลองใช้ผลงานจริงก่อนเชื่อ
+- ทดสอบบน Windows เท่านั้น
+
+## ติดปัญหา
+| อาการ | ทำยังไง |
+|---|---|
+| ขึ้น `Model not found` | ยังไม่ได้ล็อกอิน ทำข้อ 3 ใหม่ |
+| ขึ้นเรื่อง region หรือ privacy | เข้าเว็บ OpenCode ไปที่ Settings → Privacy แล้วเลือก Global |
+| โควตาหมด | รอรีเซ็ต หรือเปิดใช้เพิ่มในเว็บ OpenCode |
+| Claude ไม่รู้จักสกิล | เช็คว่าวางโฟลเดอร์ถูกที่ แล้วเปิดใหม่ |
+
+## ถอนการติดตั้ง
+ลบโฟลเดอร์ `opencode-deepseek` และไฟล์ `ds-auto.md`, `ds-review.md` ใน `C:\Users\ชื่อคุณ\.config\opencode\agents\`
